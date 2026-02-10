@@ -25,7 +25,9 @@ The goal is to answer:
 Accurate forecasting helps with:
 
 ✔ Inventory planning
+
 ✔ Staffing decisions
+
 ✔ Supply chain optimization
 
 🛠 Tools & Technologies
