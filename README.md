@@ -153,7 +153,7 @@ Retail sales exhibit yearly seasonality, so we introduced:
 | Metric   | Value     |
 | -------- | --------- |
 | MAE      | 613,853   |
-| RMSE     | 596B      |
+| RMSE     | 772028.78 |
 | **MAPE** | **1.32%** |
 
 🎯 Interpretation
