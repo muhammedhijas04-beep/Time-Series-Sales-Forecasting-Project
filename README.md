@@ -1,180 +1,75 @@
-# 📈 Retail Sales Forecasting using ARIMA & SARIMA
+📈 Retail Sales Forecasting using SARIMA
 
 🧠 Project Overview
 
-This project builds an end-to-end time series forecasting system to predict weekly retail company sales using statistical models.
+This project builds a time-series forecasting model to predict weekly retail sales using historical data.
 
-The objective is to transform raw historical sales data into a forecasting model that supports demand planning and inventory decisions.
+The objective is to support inventory planning, demand forecasting, and operational decision-making by accurately estimating future sales.
 
-We compare ARIMA vs SARIMA and evaluate model accuracy on unseen future data.
+🚨 Business Problem
 
-🎯 Business Problem
+Retail businesses face:
 
-Retail sales show:
+Fluctuating weekly demand
+Seasonal spikes during holidays
+Uncertainty in inventory planning
 
-Weekly fluctuations
+👉 Key question:
+“How much should we stock in upcoming weeks?”
 
-Holiday demand spikes
+🎯 Business Impact
 
-Yearly seasonal patterns
+Improves inventory planning accuracy
+Reduces overstocking and stockouts
+Supports staffing and supply chain decisions
+Enables data-driven demand forecasting
 
-The goal is to answer:
+📊 Dataset Summary
 
-“How much will we sell in upcoming weeks?”
-
-Accurate forecasting helps with:
-
-✔ Inventory planning
-
-✔ Staffing decisions
-
-✔ Supply chain optimization
-
+132 weeks of historical sales data
+Aggregated at company level
+Weekly frequency
 🛠 Tools & Technologies
+Python (Pandas, NumPy) – Data processing
+Matplotlib / Seaborn – Visualization
+Statsmodels – Time series modeling
+Scikit-learn – Model evaluation
 
-| Tool                   | Purpose                        |
-| ---------------------- | ------------------------------ |
-| Python (Pandas, NumPy) | Data cleaning & transformation |
-| Matplotlib / Seaborn   | Visualization                  |
-| Statsmodels            | ARIMA & SARIMA modeling        |
-| Scikit-learn           | Forecast accuracy metrics      |
+🔍 Key Analysis
 
-🧱 Project Workflow
+Identified strong yearly seasonal patterns
+Observed stable baseline demand (~45M weekly sales)
+Detected holiday-driven sales spikes
+Confirmed need for seasonal modeling
 
-1️⃣ Data Preparation
+🤖 Model Approach
 
-Aggregated store-level data into total weekly company sales
+Tested ARIMA models → underperformed due to seasonality
+Implemented SARIMA model to capture:
+Short-term trends
+Yearly seasonal cycles
 
-Converted Date column into time index
+📈 Model Performance
 
-Ensured continuous weekly frequency
+Metric	Value
+MAE	   613K
+RMSE	 772K
+MAPE	1.32%
 
-2️⃣ Trend & Seasonality Analysis
+👉 Forecast accuracy = 98.7%
 
-📊 Weekly Sales Trend
+🔮 Key Insights
 
-<img width="992" height="686" alt="image" src="https://github.com/user-attachments/assets/9d19a591-27bd-46b1-9528-a52cf569f9c1" />
+Weekly sales remain stable with predictable seasonal spikes
+Holiday periods increase demand significantly
+SARIMA effectively captures long-term patterns
 
-📈 12-Week Rolling Average
+📊 Forecast Visualization
 
-<img width="1204" height="736" alt="image" src="https://github.com/user-attachments/assets/a4fe8719-5a1c-4596-8f7f-e0cb527e9523" />
-
-Findings
-
-Strong yearly seasonal peaks
-
-No consistent long-term growth
-
-Data is non-stationary
-
-3️⃣ Stationarity Treatment
-
-Applied first differencing:
-
-              **Yt′​=Yt​−Yt−1**
-              ​​
-<img width="980" height="565" alt="image" src="https://github.com/user-attachments/assets/82d13c28-8d27-486a-a424-1d965f713337" />
-
-4️⃣ ADF Test (Stationarity Check)
-
-| Metric        | Value    | Conclusion              |
-| ------------- | -------- | ----------------------- |
-| ADF Statistic | -6.43    | Strong stationarity     |
-| p-value       | 1.68e-08 | Reject non-stationarity |
-
-→ Set d = 1
-
-5️⃣ ACF & PACF Analysis
-
-Used to estimate ARIMA parameters.
-
-<img width="567" height="437" alt="image" src="https://github.com/user-attachments/assets/ce270f49-5faf-4463-bb4e-f75dcba39919" />
-
-<img width="567" height="437" alt="image" src="https://github.com/user-attachments/assets/ab04240e-3f33-4de5-a1b9-45568ab3067c" />
-
-| Plot | Insight            | Parameter |
-| ---- | ------------------ | --------- |
-| ACF  | Spike at lag 1     | q = 1     |
-| PACF | Spikes up to lag 3 | p = 2–3   |
-
-📈 ARIMA Modeling
-
-Tested:
-
-ARIMA(2,1,1)
-
-ARIMA(3,1,1)
-
-| Model        | AIC  |
-| ------------ | ---- |
-| ARIMA(2,1,1) | 4370 |
-| ARIMA(3,1,1) | 4458 |
-
-⚠ Residuals still showed seasonal structure → ARIMA underfitting
-
-🔁 Switching to SARIMA
-
-Retail sales exhibit yearly seasonality, so we introduced:
-
-**SARIMA(2,1,1) × (1,1,1,52**
-
-| Component  | Captures            |
-| ---------- | ------------------- |
-| Short-term | Weekly dependencies |
-| Seasonal   | Yearly cycles       |
-
-📊 SARIMA Model Results
-
-<img width="971" height="559" alt="image" src="https://github.com/user-attachments/assets/9add5fcf-ce7c-4b6c-a5b4-7e329cbe610c" />
-
-
-| Metric         | Value      |
-| -------------- | ---------- |
-| Observations   | 132 weeks  |
-| Log Likelihood | -387.86    |
-| **AIC**        | **787.71** |
-
-🧪 Residual Diagnostics
-
-| Test               | p-value | Result                |
-| ------------------ | ------- | --------------------- |
-| Ljung-Box          | 0.33    | No autocorrelation    |
-| Jarque-Bera        | 0.88    | Near normal residuals |
-| Heteroskedasticity | 0.33    | Stable variance       |
-
-✔ Residuals behave like random noise
-
-🔮 Forecast vs Actual
-
-<img width="971" height="482" alt="image" src="https://github.com/user-attachments/assets/bc5cc3d9-d29c-407a-b5ea-a576f1c84a4a" />
+<img width="971" height="482" alt="SARIMA Forecast vs Actual" src="https://github.com/user-attachments/assets/f8b7e2cd-4929-46db-af3f-3310934ed241" />
 
 
 
-| Metric   | Value     |
-| -------- | --------- |
-| MAE      | 613,853   |
-| RMSE     | 772028.78 |
-| **MAPE** | **1.32%** |
+🚀 Final Outcome
 
-🎯 Interpretation
-
-Weekly sales ≈ 45–50 million
-Forecast error ≈ 0.6 million
-
-➡ Forecast Accuracy ≈ 98.7%
-
-🚀 Key Learnings
-
-ARIMA works for short-term patterns
-
-Retail sales require seasonal modeling
-
-SARIMA dramatically improves forecasting
-
-Proper residual checks are critical
-
-Date alignment is essential for evaluation
-
-🏁 Final Outcome
-
-A production-ready SARIMA forecasting model capable of predicting weekly retail sales with ~1.3% error.
+Developed a SARIMA-based forecasting model capable of predicting weekly retail sales with high accuracy (~1.3% error), enabling better demand planning and operational decision-making.
